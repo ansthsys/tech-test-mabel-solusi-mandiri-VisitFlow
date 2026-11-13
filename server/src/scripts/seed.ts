@@ -1,6 +1,8 @@
+import { auth } from '@/common/config/auth';
 import { db } from '@common/db';
-import { posts, user } from '@common/db/schema';
+import { entities, user } from '@common/db/schema';
 import { appLogger } from '@common/logger';
+import { eq } from 'drizzle-orm';
 
 /**
  * Database Seed Script (OPTIONAL)
@@ -14,66 +16,71 @@ async function seed() {
 	appLogger.info('[SEED] Starting database seeding...');
 
 	try {
-		// Create sample users
-		appLogger.info('[SEED] Creating sample users...');
-		const [user1, user2] = await db
-			.insert(user)
+		appLogger.info('[SEED] Check admin account already created...');
+		const [adminExists] = await db.select().from(user).where(eq(user.email, 'admin@email.com'));
+
+		if (!adminExists) {
+			appLogger.info('[SEED] Creating admin account...');
+			const { user: userCreated } = await auth.api.signUpEmail({
+				body: {
+					name: 'Admin',
+					email: 'admin@email.com',
+					password: 'Admin123!',
+				},
+			});
+
+			if (userCreated) {
+				appLogger.info('[SEED] Verifying admin account...');
+				await db
+					.update(user)
+					.set({
+						emailVerified: true,
+					})
+					.where(eq(user.id, userCreated.id));
+			}
+		}
+
+		appLogger.info('[SEED] Creating sample entities...');
+		await db
+			.insert(entities)
 			.values([
 				{
-					id: 'sample-user-1',
-					name: 'Alice Demo',
-					email: 'alice@example.com',
-					emailVerified: true,
+					id: '00000000-0000-0000-0000-000000000001',
+					name: 'PT Kipas Angin',
+					type: 'Perusahaan',
+					segment: 'B2B',
+					region: 'Bandung',
 				},
 				{
-					id: 'sample-user-2',
-					name: 'Bob Sample',
-					email: 'bob@example.com',
-					emailVerified: true,
+					id: '00000000-0000-0000-0000-000000000002',
+					name: 'PT Kipas Angin',
+					type: 'Perusahaan',
+					segment: 'B2B',
+					region: 'Jakarta',
+				},
+				{
+					id: '00000000-0000-0000-0000-000000000003',
+					name: 'CV Pendingin Ruangan',
+					type: 'Perusahaan',
+					segment: 'B2B',
+					region: 'Bandung',
+				},
+				{
+					id: '00000000-0000-0000-0000-000000000004',
+					name: 'Komdigi',
+					type: 'Instansi',
+					segment: 'B2G',
+					region: 'Jakarta',
+				},
+				{
+					id: '00000000-0000-0000-0000-000000000005',
+					name: 'Kelurahan Abc',
+					type: 'Instansi',
+					segment: 'B2G',
+					region: 'Bandung',
 				},
 			])
-			.onConflictDoNothing()
-			.returning();
-
-		if (user1 && user2) {
-			appLogger.info(`[SEED] Created users: ${user1.email}, ${user2.email}`);
-
-			// Create sample posts
-			appLogger.info('[SEED] Creating sample posts...');
-			await db
-				.insert(posts)
-				.values([
-					{
-						title: 'Getting Started with Elysia',
-						content:
-							'Elysia is a fast and lightweight TypeScript framework built on top of Bun. It provides an intuitive API and excellent TypeScript support.',
-						authorId: user1.id,
-					},
-					{
-						title: 'Understanding Better Auth',
-						content:
-							'Better Auth is a modern authentication library that provides secure, cookie-based authentication out of the box. It handles sessions, CSRF protection, and more.',
-						authorId: user1.id,
-					},
-					{
-						title: 'Database Design Tips',
-						content:
-							'When designing your database schema, always consider relationships, indexing, and normalization. Use foreign keys to maintain referential integrity.',
-						authorId: user2.id,
-					},
-					{
-						title: 'TypeScript Best Practices',
-						content:
-							'Use strict mode, leverage type inference, and prefer interfaces over type aliases for object shapes. Always type your function parameters and return values.',
-						authorId: user2.id,
-					},
-				])
-				.onConflictDoNothing();
-
-			appLogger.info('[SEED] Created sample posts');
-		} else {
-			appLogger.info('[SEED] Sample data already exists');
-		}
+			.onConflictDoNothing();
 
 		appLogger.info('[SEED] Database seeding completed successfully');
 	} catch (error) {
