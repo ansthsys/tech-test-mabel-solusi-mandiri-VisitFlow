@@ -1,37 +1,36 @@
 import { auth } from '@common/config/auth';
-import type { Elysia } from 'elysia';
+import { Elysia } from 'elysia';
 
 /**
- * Derives user and session from Better Auth
- * Call this in your module before defining routes
+ * Authentication plugin
+ * Derives user and session from Better Auth and exposes the `auth` macro.
+ * Use with `new Elysia().use(authPlugin)` before defining protected routes.
  */
-export function withAuth<T extends Elysia<any, any, any, any, any, any, any>>(app: T) {
-	return app
-		.derive(async ({ request }) => {
-			const session = await auth.api.getSession({
-				headers: request.headers,
-			});
+export const authPlugin = new Elysia({ name: 'auth-plugin' })
+	.derive({ as: 'global' }, async ({ request }) => {
+		const session = await auth.api.getSession({
+			headers: request.headers,
+		});
+
+		return {
+			user: session?.user ?? null,
+			session: session?.session ?? null,
+		};
+	})
+	.macro({
+		auth(enabled: boolean) {
+			if (!enabled) return;
 
 			return {
-				user: session?.user ?? null,
-				session: session?.session ?? null,
+				beforeHandle({ user, set }) {
+					if (!user) {
+						set.status = 401;
+						return {
+							error: 'Unauthorized',
+							message: 'Please login first',
+						};
+					}
+				},
 			};
-		})
-		.macro({
-			auth(enabled: boolean) {
-				if (!enabled) return;
-
-				return {
-					beforeHandle: async ({ user, set }: any) => {
-						if (!user) {
-							set.status = 401;
-							return {
-								error: 'Unauthorized',
-								message: 'Please login first',
-							};
-						}
-					},
-				};
-			},
-		});
-}
+		},
+	});

@@ -1,5 +1,5 @@
 import { appLogger } from '@/common/logger';
-import { withAuth } from '@common/middleware/auth-guard';
+import { authPlugin } from '@common/middleware/auth-guard';
 import { Elysia, t } from 'elysia';
 import {
 	changeStatusVisitPlansPayloadSchema,
@@ -8,7 +8,8 @@ import {
 } from './schema';
 import * as visitPlansService from './service';
 
-export const visitPlansModule = withAuth(new Elysia({ prefix: '/api/activities' }))
+export const visitPlansModule = new Elysia({ prefix: '/api/activities' })
+	.use(authPlugin)
 	.get(
 		'/',
 		async ({ query }) => {

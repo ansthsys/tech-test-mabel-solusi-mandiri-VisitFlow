@@ -1,4 +1,4 @@
-import { withAuth } from '@common/middleware/auth-guard';
+import { authPlugin } from '@common/middleware/auth-guard';
 import { Elysia, t } from 'elysia';
 import { createPostSchema, updatePostSchema } from './schemas';
 import * as service from './service';
@@ -8,7 +8,8 @@ import * as service from './service';
  *
  * Demonstrates public/protected routes with ownership validation.
  */
-export const postsModule = withAuth(new Elysia({ prefix: '/api/posts' }))
+export const postsModule = new Elysia({ prefix: '/api/posts' })
+	.use(authPlugin)
 	// GET /api/posts - Public (anyone can view)
 	.get(
 		'/',
@@ -56,7 +57,12 @@ export const postsModule = withAuth(new Elysia({ prefix: '/api/posts' }))
 	// POST /api/posts - Authenticated users
 	.post(
 		'/',
-		async ({ body, user, set }: any) => {
+		async ({ body, user, set }) => {
+			if (!user) {
+				set.status = 401;
+				return { error: 'Unauthorized', message: 'Please login first' };
+			}
+
 			const post = await service.createPost({
 				title: body.title,
 				content: body.content,
@@ -83,7 +89,12 @@ export const postsModule = withAuth(new Elysia({ prefix: '/api/posts' }))
 	// PUT /api/posts/:id - Owner only
 	.put(
 		'/:id',
-		async ({ params, body, user, set }: any) => {
+		async ({ params, body, user, set }) => {
+			if (!user) {
+				set.status = 401;
+				return { error: 'Unauthorized', message: 'Please login first' };
+			}
+
 			// ownership check
 			const isOwner = await service.isPostOwner(params.id, user.id);
 
@@ -124,7 +135,12 @@ export const postsModule = withAuth(new Elysia({ prefix: '/api/posts' }))
 	// DELETE /api/posts/:id - Owner only
 	.delete(
 		'/:id',
-		async ({ params, user, set }: any) => {
+		async ({ params, user, set }) => {
+			if (!user) {
+				set.status = 401;
+				return { error: 'Unauthorized', message: 'Please login first' };
+			}
+
 			// ownership check
 			const isOwner = await service.isPostOwner(params.id, user.id);
 

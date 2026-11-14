@@ -1,10 +1,11 @@
 import { appLogger } from '@/common/logger';
-import { withAuth } from '@common/middleware/auth-guard';
+import { authPlugin } from '@common/middleware/auth-guard';
 import { Elysia, t } from 'elysia';
 import { EntityListQuerySchema } from './schema';
 import * as service from './service';
 
-export const entitiesModule = withAuth(new Elysia({ prefix: '/api/entities' }))
+export const entitiesModule = new Elysia({ prefix: '/api/entities' })
+	.use(authPlugin)
 	.get(
 		'/',
 		async ({ query }) => {
