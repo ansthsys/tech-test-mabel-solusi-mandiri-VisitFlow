@@ -1,11 +1,11 @@
-import { segmentEnum, visitPlans } from '@/common/db/schema';
+import { segmentEnum, statusEnum, visitPlans } from '@/common/db/schema';
 import { createInsertSchema, createUpdateSchema } from 'drizzle-typebox';
 import { t } from 'elysia';
 
 export const visitPlansListQuerySchema = t.Object({
 	search: t.Optional(t.String()),
 	segment: t.Optional(t.UnionEnum(['', ...segmentEnum.enumValues])),
-	status: t.Optional(t.Boolean()),
+	status: t.Optional(t.UnionEnum(statusEnum.enumValues)),
 	startDate: t.Optional(t.String({ format: 'date' })),
 	endDate: t.Optional(t.String({ format: 'date' })),
 });
@@ -37,7 +37,9 @@ export const updateVisitPlansPayloadSchema = t.Omit(_updateVisitPlansSchema, [
 	'updatedAt',
 ]);
 export const _changeStatusVisitPlansSchema = createUpdateSchema(visitPlans, {
-	status: t.Boolean({ error: 'Status is required and must be valid boolean' }),
+	status: t.UnionEnum(statusEnum.enumValues, {
+		error: 'Status is required and must be NOT_VISITED or VISITED',
+	}),
 	salesName: t.Optional(
 		t.String({
 			minLength: 1,
