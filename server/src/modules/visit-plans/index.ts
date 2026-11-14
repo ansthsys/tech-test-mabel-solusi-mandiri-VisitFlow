@@ -1,3 +1,4 @@
+import { appLogger } from '@/common/logger';
 import { withAuth } from '@common/middleware/auth-guard';
 import { Elysia, t } from 'elysia';
 import {
@@ -11,6 +12,8 @@ export const visitPlansModule = withAuth(new Elysia({ prefix: '/api/activities' 
 	.get(
 		'/',
 		async ({ query }) => {
+			appLogger.info({ query }, '[REQUEST] Get all visit plan');
+
 			const visitPlans = await visitPlansService.getAllVisitPlans(query);
 			return {
 				data: visitPlans,
@@ -28,6 +31,8 @@ export const visitPlansModule = withAuth(new Elysia({ prefix: '/api/activities' 
 	.get(
 		'/:activityId',
 		async ({ params }) => {
+			appLogger.info({ params }, '[REQUEST] Get visit plan by id');
+
 			const visitPlan = await visitPlansService.getVisitPlanById(params.activityId);
 			return {
 				data: visitPlan,
@@ -50,6 +55,8 @@ export const visitPlansModule = withAuth(new Elysia({ prefix: '/api/activities' 
 	.post(
 		'/',
 		async ({ body, set }) => {
+			appLogger.info({ body }, '[REQUEST] Create visit plan');
+
 			const visitPlan = await visitPlansService.createVisitPlan(body);
 
 			set.status = 201;
@@ -70,6 +77,8 @@ export const visitPlansModule = withAuth(new Elysia({ prefix: '/api/activities' 
 	.put(
 		'/:visitPlanId',
 		async ({ params, body, set }) => {
+			appLogger.info({ params, body }, '[REQUEST] Change status visit plan');
+
 			const visitPlan = await visitPlansService.changeStatusVisitPlan(params.visitPlanId, body);
 
 			if (!visitPlan) {

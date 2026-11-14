@@ -3,7 +3,7 @@ import { t } from 'elysia';
 
 export const EntityListQuerySchema = t.Object({
 	search: t.Optional(t.String()),
-	segment: t.Optional(t.UnionEnum(['', ...segmentEnum.enumValues])),
+	segment: t.Optional(t.UnionEnum(segmentEnum.enumValues, { default: undefined })),
 });
 
 export type EntityListQuery = (typeof EntityListQuerySchema)['static'];

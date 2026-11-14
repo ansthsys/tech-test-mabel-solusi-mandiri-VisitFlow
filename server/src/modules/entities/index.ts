@@ -1,3 +1,4 @@
+import { appLogger } from '@/common/logger';
 import { withAuth } from '@common/middleware/auth-guard';
 import { Elysia, t } from 'elysia';
 import { EntityListQuerySchema } from './schema';
@@ -7,6 +8,8 @@ export const entitiesModule = withAuth(new Elysia({ prefix: '/api/entities' }))
 	.get(
 		'/',
 		async ({ query }) => {
+			appLogger.info({ query }, '[REQUEST] Get All entities');
+
 			const entities = await service.getAllEntities(query);
 			return {
 				data: entities,
@@ -26,6 +29,8 @@ export const entitiesModule = withAuth(new Elysia({ prefix: '/api/entities' }))
 	.get(
 		'/:entityId',
 		async ({ params }) => {
+			appLogger.info({ params }, '[REQUEST] Get entity by id');
+
 			const entity = await service.getEntityById(params.entityId);
 			return {
 				data: entity,

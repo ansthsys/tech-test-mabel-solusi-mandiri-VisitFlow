@@ -4,8 +4,8 @@ import { t } from 'elysia';
 
 export const visitPlansListQuerySchema = t.Object({
 	search: t.Optional(t.String()),
-	segment: t.Optional(t.UnionEnum(['', ...segmentEnum.enumValues])),
-	status: t.Optional(t.UnionEnum(statusEnum.enumValues)),
+	segment: t.Optional(t.UnionEnum(segmentEnum.enumValues, { default: undefined })),
+	status: t.Optional(t.UnionEnum(statusEnum.enumValues, { default: undefined })),
 	startDate: t.Optional(t.String({ format: 'date' })),
 	endDate: t.Optional(t.String({ format: 'date' })),
 });
