@@ -1,0 +1,1 @@
+CREATE TYPE "public"."status_enum" AS ENUM('NOT_VISITED', 'VISITED');

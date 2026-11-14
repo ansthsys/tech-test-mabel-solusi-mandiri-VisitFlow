@@ -1,0 +1,1 @@
+ALTER TABLE "visit_plans" ADD COLUMN "status" "status_enum" DEFAULT 'NOT_VISITED' NOT NULL;

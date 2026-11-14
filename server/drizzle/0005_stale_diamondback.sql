@@ -1,0 +1,1 @@
+ALTER TABLE "visit_plans" DROP COLUMN "status";

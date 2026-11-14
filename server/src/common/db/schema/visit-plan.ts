@@ -1,5 +1,7 @@
-import { boolean, date, pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
+import { date, pgEnum, pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core';
 import { segmentEnum } from './entity';
+
+export const statusEnum = pgEnum('status_enum', ['NOT_VISITED', 'VISITED']);
 
 export const visitPlans = pgTable('visit_plans', {
 	id: uuid('id').primaryKey().defaultRandom(),
@@ -10,7 +12,7 @@ export const visitPlans = pgTable('visit_plans', {
 	entityRegion: varchar('entity_region', { length: 50 }).notNull(),
 	visitDate: date('visit_date', { mode: 'string' }).notNull(),
 	salesName: varchar('sales_name', { length: 100 }),
-	status: boolean('status').notNull().default(false),
+	status: statusEnum('status').notNull().default('NOT_VISITED'),
 	createdAt: timestamp('created_at').notNull().defaultNow(),
 	updatedAt: timestamp('updated_at').notNull().defaultNow(),
 });
