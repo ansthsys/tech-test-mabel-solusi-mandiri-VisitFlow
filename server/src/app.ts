@@ -2,12 +2,15 @@ import { env } from '@common/config/env';
 import { cors } from '@elysiajs/cors';
 import { swagger } from '@elysiajs/swagger';
 import { authModule } from '@modules/auth';
+import { entitiesModule } from '@modules/entities';
 import { healthModule } from '@modules/health';
 import { postsModule } from '@modules/posts';
 import { Elysia } from 'elysia';
+import { ResourceNotFound } from './common/errors/resource-notfound';
 import { appLogger } from './common/logger';
 import { authRateLimit, globalRateLimit } from './common/middleware/rate-limiter';
 import { requestLogger } from './common/middleware/request-logger';
+import { visitPlansModule } from './modules/visit-plans';
 
 /**
  * Application composition root.
@@ -55,6 +58,9 @@ export const createApp = () => {
 				},
 			}),
 		)
+		.error({
+			RESOURCE_NOT_FOUND: ResourceNotFound,
+		})
 		.onError(({ code, error, set }) => {
 			const errorMessage = error instanceof Error ? error.message : String(error);
 
@@ -69,19 +75,27 @@ export const createApp = () => {
 				return { error: 'Route not found' };
 			}
 
+			if (code === 'RESOURCE_NOT_FOUND') {
+				set.status = 404;
+				return { error: 'Resource not found', message: error.message };
+			}
+
 			if (code === 'VALIDATION') {
 				set.status = 400;
 
-				let parsedMessage = errorMessage;
-				try {
-					if (typeof errorMessage === 'string' && errorMessage.startsWith('{')) {
-						parsedMessage = JSON.parse(errorMessage);
-					}
-				} catch {}
+				// let parsedMessage = errorMessage;
+				// try {
+				// 	if (typeof errorMessage === 'string' && errorMessage.startsWith('{')) {
+				// 		parsedMessage = JSON.parse(errorMessage);
+				// 	}
+				// } catch {}
 
 				return {
 					error: 'Validation error',
-					message: parsedMessage,
+					message: error.all.map((err) => ({
+						field: err.path.replace('/', ''),
+						error: err.schema.error,
+					})),
 				};
 			}
 
@@ -102,7 +116,9 @@ export const createApp = () => {
 
 		// Feature modules
 		.use(healthModule)
-		.use(postsModule);
+		.use(postsModule)
+		.use(entitiesModule)
+		.use(visitPlansModule);
 
 	if (env.ENABLE_AUTH) {
 		app.use(authRateLimit);

@@ -8,9 +8,10 @@ export const entities = pgTable('entities', {
 	type: varchar('type', { length: 50 }).notNull(),
 	segment: segmentEnum('segment').notNull(),
 	region: varchar('region', { length: 50 }).notNull(),
-	createdAt: timestamp('created_at').notNull().defaultNow(),
-	updatedAt: timestamp('updated_at').notNull().defaultNow(),
+	createdAt: timestamp('created_at', { mode: 'string' }).notNull().defaultNow(),
+	updatedAt: timestamp('updated_at', { mode: 'string' }).notNull().defaultNow(),
 });
 
 export type Entity = typeof entities.$inferSelect;
 export type NewEntity = typeof entities.$inferInsert;
+export type Segment = (typeof segmentEnum.enumValues)[number];

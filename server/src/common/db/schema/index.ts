@@ -9,4 +9,3 @@ export * from './auth';
 export * from './posts';
 export * from './entity';
 export * from './visit-plan';
-export * from './sales';
