@@ -20,8 +20,8 @@ export const getAllVisitPlans = async (filter?: VisitPlansListQuery) => {
 				filter?.status === undefined || filter?.status === null
 					? undefined
 					: eq(visitPlans.status, filter.status),
-				filter?.startDate ? gte(visitPlans.visitDate, filter?.startDate) : undefined,
-				filter?.endDate ? lte(visitPlans.visitDate, filter?.endDate) : undefined,
+				filter?.from ? gte(visitPlans.visitDate, filter.from) : undefined,
+				filter?.to ? lte(visitPlans.visitDate, filter.to) : undefined,
 			),
 		);
 };
