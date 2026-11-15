@@ -1,6 +1,7 @@
 import { DataTableColumnHeader } from "@components/data-table/data-table-column-header";
 import { ColumnDef } from "@tanstack/react-table";
 import { Activity } from "src/types/api";
+import RowActions from "./row-actions";
 
 export const columns: ColumnDef<Activity>[] = [
   {
@@ -93,5 +94,15 @@ export const columns: ColumnDef<Activity>[] = [
     cell: ({ row }) => {
       return <div>{row.getValue("salesName") ?? "-"}</div>;
     },
+  },
+  {
+    id: "actions",
+    header: () => <div className="text-center">Action</div>,
+    cell: ({ row }) => (
+      <div className="flex justify-center">
+        <RowActions activity={row.original} />
+      </div>
+    ),
+    enableSorting: false,
   },
 ];

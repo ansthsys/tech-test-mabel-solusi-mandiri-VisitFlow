@@ -45,3 +45,8 @@ export type ActivityPayload = {
   segment: string;
   visitDate: string;
 };
+
+export type UpdateActivityPayload = {
+  status: "NOT_VISITED" | "VISITED";
+  salesName?: string;
+};
