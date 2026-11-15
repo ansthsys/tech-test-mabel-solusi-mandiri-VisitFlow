@@ -20,14 +20,22 @@ export type EntityQuery = {
 
 export type Activity = {
   id: string;
-  segment: "B2G" | "B2B";
-  createdAt: Date;
-  updatedAt: Date;
   entityId: string;
   entityName: string;
   entityType: string;
+  segment: "B2G" | "B2B";
   entityRegion: string;
   visitDate: string;
-  salesName: string | null;
   status: "NOT_VISITED" | "VISITED";
+  salesName: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type ActivityQuery = {
+  search: string;
+  segment: string;
+  status: string;
+  from: string;
+  to: string;
 };

@@ -3,6 +3,7 @@ import { DashboardLayout } from "@layouts/dashboard/dashboard-layout";
 import RootLayout from "@layouts/root/root-layout";
 import { EntityList } from "@pages/entities/list-page";
 import {
+  ActivityList,
   Charts,
   Dashboard,
   Error404,
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
           {
             path: "entities",
             element: <EntityList />,
+          },
+          {
+            path: "activities",
+            element: <ActivityList />,
           },
           {
             path: "forms",

@@ -6,6 +6,7 @@ import {
   FileText,
   ShieldX,
   Table2,
+  TicketsPlaneIcon,
 } from "lucide-react";
 
 const menus = [
@@ -18,6 +19,11 @@ const menus = [
     name: "sidebar.entity",
     icon: <Building2Icon className="h-[18px] w-[18px]" />,
     route: "/entities",
+  },
+  {
+    name: "sidebar.activity",
+    icon: <TicketsPlaneIcon className="h-[18px] w-[18px]" />,
+    route: "/activities",
   },
   {
     name: "sidebar.form",

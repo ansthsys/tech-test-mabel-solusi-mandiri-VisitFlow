@@ -1,4 +1,4 @@
-import { EntityQuery } from "src/types/api";
+import { ActivityQuery, EntityQuery } from "src/types/api";
 
 export const productKeys = {
   all: ["product"] as const,
@@ -21,4 +21,9 @@ export const authKeys = {
 export const entityKeys = {
   all: ["entity"] as const,
   filters: (filters: EntityQuery) => [...entityKeys.all, ...Object.values(filters)] as const,
+};
+
+export const activityKeys = {
+  all: ["activity"] as const,
+  filters: (filters: ActivityQuery) => [...activityKeys.all, ...Object.values(filters)] as const,
 };
