@@ -20,7 +20,6 @@ import useUserPreference from "@stores/user-preference";
 import clsx from "clsx";
 import LangDropdown from "@components/commons/lang-dropdown";
 import { useTheme } from "@components/theme/theme-provider";
-import SearchInput from "@components/inputs/search-input";
 import Logo from "@components/commons/logo";
 import { useModal } from "@saimin/react-modal-manager";
 import LogoutConfirmation from "@components/modals/logout-confirmation";
@@ -93,9 +92,7 @@ export function Header() {
       </Sheet>
 
       {/* ======== App Bar ======== */}
-      <div className="flex-1 flex gap-4 items-center justify-between">
-        <SearchInput />
-
+      <div className="flex-1 flex gap-4 items-center justify-end">
         <LangDropdown />
 
         <Button
@@ -123,7 +120,6 @@ export function Header() {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
             <DropdownMenuItem onClick={handleOpenModal}>
               Logout
             </DropdownMenuItem>

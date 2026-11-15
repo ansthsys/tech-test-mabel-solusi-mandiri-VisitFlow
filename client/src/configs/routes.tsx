@@ -4,18 +4,7 @@ import RootLayout from "@layouts/root/root-layout";
 import { ActivityCreatePage } from "@pages/activities/create-page";
 import { ActivityChangeStatusPage } from "@pages/activities/change-status-page";
 import { EntityList } from "@pages/entities/list-page";
-import {
-  ActivityList,
-  Charts,
-  Dashboard,
-  Error404,
-  Error500,
-  Form,
-  Login,
-  Modals,
-  TableCreatePage,
-  TableList,
-} from "@pages/index";
+import { ActivityList, Dashboard, Error404, Login } from "@pages/index";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 
 export const router = createBrowserRouter([
@@ -51,34 +40,6 @@ export const router = createBrowserRouter([
           {
             path: "activities/:activityId/change-status",
             element: <ActivityChangeStatusPage />,
-          },
-          {
-            path: "forms",
-            element: <Form />,
-          },
-          {
-            path: "table",
-            element: <TableList />,
-          },
-          {
-            path: "table/create",
-            element: <TableCreatePage />,
-          },
-          {
-            path: "charts",
-            element: <Charts />,
-          },
-          {
-            path: "modals",
-            element: <Modals />,
-          },
-          {
-            path: "404",
-            element: <Error404 />,
-          },
-          {
-            path: "500",
-            element: <Error500 />,
           },
         ],
       },
