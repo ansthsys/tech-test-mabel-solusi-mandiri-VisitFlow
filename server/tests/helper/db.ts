@@ -2,6 +2,7 @@ import { sql } from 'drizzle-orm';
 import { migrate } from 'drizzle-orm/postgres-js/migrator';
 import postgres from 'postgres';
 import { db } from '../../src/common/db';
+import { entities } from '../../src/common/db/schema';
 
 const dbUrl = new URL(process.env.DATABASE_URL!);
 const dbName = dbUrl.pathname.slice(1);
@@ -54,4 +55,30 @@ export async function dropTestDb() {
 	const admin = adminClient();
 	await admin.unsafe(`DROP DATABASE IF EXISTS "${dbName}" WITH (FORCE)`); // FORCE butuh Postgres 13+
 	await admin.end();
+}
+
+export async function seedEntity() {
+	return await db
+		.insert(entities)
+		.values([
+			{
+				name: 'Entity 1',
+				type: 'Industry',
+				segment: 'B2B',
+				region: 'Bandung',
+			},
+			{
+				name: 'Entity 2',
+				type: 'Company',
+				segment: 'B2G',
+				region: 'Jakarta',
+			},
+			{
+				name: 'Entity 3',
+				type: 'Laboratorium',
+				segment: 'B2G',
+				region: 'Medan',
+			},
+		])
+		.returning();
 }
