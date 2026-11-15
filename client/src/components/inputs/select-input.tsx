@@ -14,6 +14,10 @@ import {
   SelectValue,
 } from "@components/ui/select";
 
+// Radix Select forbids an empty string item value, so use a sentinel that
+// maps back to "" (which makes the Select show its placeholder again).
+const CLEAR_VALUE = "__clear__";
+
 interface Props {
   label?: string;
   placeholder?: string;
@@ -24,6 +28,7 @@ interface Props {
   form?: any;
   isLoading?: boolean;
   className?: string;
+  clearable?: boolean;
 }
 
 function SelectInput({
@@ -36,6 +41,7 @@ function SelectInput({
   form,
   isLoading = false,
   className,
+  clearable = false,
 }: Props) {
   return (
     <FormField
@@ -51,8 +57,10 @@ function SelectInput({
           )}
           <Select
             disabled={isLoading}
-            onValueChange={field.onChange}
-            defaultValue={field.value}
+            onValueChange={(value) =>
+              field.onChange(value === CLEAR_VALUE ? "" : value)
+            }
+            value={field.value ?? ""}
           >
             <FormControl>
               <SelectTrigger className={className}>
@@ -64,6 +72,11 @@ function SelectInput({
               </SelectTrigger>
             </FormControl>
             <SelectContent>
+              {clearable && (
+                <SelectItem value={CLEAR_VALUE} className="text-muted-foreground">
+                  {placeholder}
+                </SelectItem>
+              )}
               {data?.map((d) => (
                 <SelectItem key={d.value as string} value={d.value as string}>
                   {d.label}
