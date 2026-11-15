@@ -1,0 +1,83 @@
+import Between from "@components/commons/between";
+import TextInput from "@components/inputs/text-input";
+import { Button } from "@components/ui/button";
+import { Form } from "@components/ui/form";
+import { SlidersHorizontal, X } from "lucide-react";
+import { useState } from "react";
+import clsx from "clsx";
+import SegmentSelect from "@components/selects/segment-select";
+
+interface Props {
+  form: any;
+}
+
+function Toolbar({ form }: Props) {
+  const [openFilters, setOpenFilters] = useState<boolean>(false);
+
+  const toggleFilter = () => {
+    setOpenFilters((prev) => !prev);
+  };
+
+  return (
+    <div>
+      {/* Mobile Filters and Actions */}
+      <Between className="items-start flex sm:hidden">
+        <Button
+          onClick={toggleFilter}
+          variant="outline"
+          size="icon"
+          className="overflow-hidden rounded-full"
+        >
+          {openFilters ? (
+            <X className="h-4 w-4" />
+          ) : (
+            <SlidersHorizontal className="h-4 w-4" />
+          )}
+        </Button>
+      </Between>
+
+      {/* Mobile Filter Form */}
+      <div>
+        <Form {...form}>
+          <form
+            className={clsx(
+              "flex sm:hidden flex-col sm:flex-row gap-4 overflow-hidden transition-all duration-300",
+              openFilters ? "mt-4 max-h-[100vh] min-h-0" : "h-0",
+            )}
+          >
+            <TextInput placeholder="Search entity" name="search" form={form} />
+
+            <SegmentSelect
+              placeholder="Choose segment"
+              name="segment"
+              className="min-w-[200px]"
+              form={form}
+            />
+          </form>
+        </Form>
+      </div>
+
+      {/* Desktop Filters and Actions */}
+      <Between className="hidden sm:flex">
+        <Form {...form}>
+          <form
+            className={clsx(
+              "flex flex-col sm:flex-row gap-4 overflow-hidden transition-all duration-300",
+            )}
+          >
+            <TextInput placeholder="Search entity" name="search" form={form} />
+
+            <SegmentSelect
+              placeholder="Choose segment"
+              name="segment"
+              className="min-w-[200px]"
+              form={form}
+            />
+          </form>
+        </Form>
+      </Between>
+    </div>
+  );
+}
+
+export default Toolbar;

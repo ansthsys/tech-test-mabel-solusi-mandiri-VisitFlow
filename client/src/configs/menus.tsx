@@ -1,4 +1,5 @@
 import {
+  Building2Icon,
   ChartColumnIncreasing,
   CircleGauge,
   FileBox,
@@ -12,6 +13,11 @@ const menus = [
     name: "sidebar.dashboard",
     icon: <CircleGauge className="h-[18px] w-[18px]" />,
     route: "/dashboard",
+  },
+  {
+    name: "sidebar.entity",
+    icon: <Building2Icon className="h-[18px] w-[18px]" />,
+    route: "/entities",
   },
   {
     name: "sidebar.form",

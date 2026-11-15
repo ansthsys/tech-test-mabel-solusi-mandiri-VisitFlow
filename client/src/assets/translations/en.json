@@ -2,6 +2,7 @@
   "title": "Welcome",
   "sidebar": {
     "dashboard": "Dashboard",
+    "entity": "Entity",
     "form": "Form",
     "table": "Table",
     "charts": "Charts",
@@ -20,6 +21,9 @@
   "form": {
     "pageTitle": "Customizable & Reusable Form Components",
     "pageDesc": "Easily create dynamic, scalable forms with customizable, reusable components. Simplify development with built-in validation, accessibility, and flexible styling options for any project."
+  },
+  "entityList": {
+    "pageTitle": "List of entity"
   },
   "table": {
     "pageTitle": "Customizable & Reusable Table Components",

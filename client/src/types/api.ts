@@ -13,6 +13,11 @@ export type Entity = {
   updatedAt: string;
 };
 
+export type EntityQuery = {
+  search: string;
+  segment: string;
+};
+
 export type Activity = {
   id: string;
   segment: "B2G" | "B2B";

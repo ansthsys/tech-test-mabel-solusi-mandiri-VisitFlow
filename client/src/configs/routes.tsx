@@ -1,6 +1,7 @@
 import AuthLayout from "@layouts/auth/auth-layout";
 import { DashboardLayout } from "@layouts/dashboard/dashboard-layout";
 import RootLayout from "@layouts/root/root-layout";
+import { EntityList } from "@pages/entities/list-page";
 import {
   Charts,
   Dashboard,
@@ -31,6 +32,10 @@ export const router = createBrowserRouter([
             index: true,
             path: "dashboard",
             element: <Dashboard />,
+          },
+          {
+            path: "entities",
+            element: <EntityList />,
           },
           {
             path: "forms",
