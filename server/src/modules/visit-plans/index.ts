@@ -75,7 +75,7 @@ export const visitPlansModule = new Elysia({ prefix: '/api/activities' })
 			},
 		},
 	)
-	.put(
+	.patch(
 		'/:visitPlanId',
 		async ({ params, body, set }) => {
 			appLogger.info({ params, body }, '[REQUEST] Change status visit plan');
