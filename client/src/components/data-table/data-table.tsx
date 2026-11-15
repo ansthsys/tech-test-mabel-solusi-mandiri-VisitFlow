@@ -65,7 +65,7 @@ export function DataTable<TData, TValue>({
       columnVisibility,
       rowSelection,
       columnFilters,
-      pagination: paginationState,
+      ...(paginationState ? { pagination: paginationState } : {}),
     },
     enableRowSelection: true,
     manualPagination: manualPagination,
