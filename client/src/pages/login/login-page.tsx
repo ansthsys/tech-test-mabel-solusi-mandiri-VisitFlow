@@ -8,8 +8,9 @@ import TextInput from "@components/inputs/text-input";
 import PasswordInput from "@components/inputs/password-input";
 import { Button } from "@components/ui/button";
 import useAuthOperations from "@hooks/use-auth-operations";
-import { ADMIN } from "@configs/vars";
 import { useTranslation } from "react-i18next";
+import { useAuthLogin } from "@apis/queries/auth";
+import { isAxiosError } from "axios";
 
 type FormType = {
   username: string;
@@ -18,6 +19,7 @@ type FormType = {
 
 export function Login() {
   const { login } = useAuthOperations();
+  const { mutateAsync: submitLogin } = useAuthLogin();
   const { t } = useTranslation();
   const form = useForm<FormType>({
     resolver: zodResolver(loginSchema),
@@ -27,14 +29,18 @@ export function Login() {
     },
   });
 
-  function onSubmit(values: FormType) {
-    if (
-      ADMIN.username === values.username &&
-      ADMIN.password === values.password
-    ) {
-      login(values);
-    } else {
-      toast.error("Wrong username or password");
+  async function onSubmit(values: FormType) {
+    try {
+      const res = await submitLogin({
+        email: values.username,
+        password: values.password,
+      });
+      login({ token: res.data?.token });
+    } catch (error) {
+      const message = isAxiosError(error)
+        ? error.response?.data?.message
+        : undefined;
+      toast.error(message ?? "Wrong username or password");
     }
   }
 
@@ -47,9 +53,9 @@ export function Login() {
         <div>
           <Text size="xxl">{t("login.loginHere")}</Text>
           <Text className="text-muted-foreground">
-            {`${t("login.username")} - admin | ${t(
-              "login.password"
-            )} - password`}
+            {`${t("login.username")} - admin@email.com | ${t(
+              "login.password",
+            )} - Admin123!`}
           </Text>
         </div>
 

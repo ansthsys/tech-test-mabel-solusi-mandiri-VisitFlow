@@ -11,8 +11,8 @@
   },
   "login": {
     "loginHere": "Login Here",
-    "username": "Username",
-    "enterUsername": "Enter Username",
+    "username": "Email",
+    "enterUsername": "Enter email",
     "password": "Password",
     "enterPassword": "Enter Password",
     "login": "Login"

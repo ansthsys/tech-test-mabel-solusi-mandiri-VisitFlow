@@ -9,3 +9,9 @@ export const categoryKeys = {
   detail: (id: string) => [...categoryKeys.all, id] as const,
   filters: (filters: Record<string, string | number>) => [...categoryKeys.all, ...Object.values(filters)] as const,
 };
+
+export const authKeys = {
+  all: ["auth"] as const,
+  login: () => [...authKeys.all, "login"] as const,
+  logout: () => [...authKeys.all, "logout"] as const,
+};
