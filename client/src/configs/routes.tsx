@@ -1,6 +1,7 @@
 import AuthLayout from "@layouts/auth/auth-layout";
 import { DashboardLayout } from "@layouts/dashboard/dashboard-layout";
 import RootLayout from "@layouts/root/root-layout";
+import { ActivityCreatePage } from "@pages/activities/create-page";
 import { EntityList } from "@pages/entities/list-page";
 import {
   ActivityList,
@@ -41,6 +42,10 @@ export const router = createBrowserRouter([
           {
             path: "activities",
             element: <ActivityList />,
+          },
+          {
+            path: "activities/create",
+            element: <ActivityCreatePage />,
           },
           {
             path: "forms",

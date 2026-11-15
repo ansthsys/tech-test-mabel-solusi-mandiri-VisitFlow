@@ -1,8 +1,8 @@
 import { DataTableColumnHeader } from "@components/data-table/data-table-column-header";
 import { ColumnDef } from "@tanstack/react-table";
-import { Entity } from "src/types/api";
+import { Activity } from "src/types/api";
 
-export const columns: ColumnDef<Entity>[] = [
+export const columns: ColumnDef<Activity>[] = [
   {
     accessorKey: "no",
     header: ({ column }) => (

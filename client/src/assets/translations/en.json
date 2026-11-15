@@ -3,6 +3,7 @@
   "sidebar": {
     "dashboard": "Dashboard",
     "entity": "Entity",
+    "activity": "Activity",
     "form": "Form",
     "table": "Table",
     "charts": "Charts",
@@ -26,6 +27,9 @@
     "pageTitle": "List of entity"
   },
   "activityList": {
+    "pageTitle": "List of activity"
+  },
+  "activityCreate": {
     "pageTitle": "List of activity"
   },
   "table": {

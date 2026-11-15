@@ -1,8 +1,8 @@
 import secureApi from "@apis/instances/secure-api";
-import { ActivityQuery, Entity } from "src/types/api";
+import { Activity, ActivityPayload, ActivityQuery } from "src/types/api";
 
 export async function getAllActivities(filters?: ActivityQuery) {
-  const res = await secureApi.get<{ data: Entity[] }>("/activities", {
+  const res = await secureApi.get<{ data: Activity[] }>("/activities", {
     params: {
       search: filters?.search ? filters.search : undefined,
       segment: filters?.segment ? filters.segment : undefined,
@@ -12,5 +12,10 @@ export async function getAllActivities(filters?: ActivityQuery) {
     },
   });
 
+  return res.data.data;
+}
+
+export async function postCreateActivity(payload: ActivityPayload) {
+  const res = await secureApi.post<{ data: Activity }>("/activities", payload);
   return res.data.data;
 }

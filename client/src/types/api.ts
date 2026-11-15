@@ -39,3 +39,9 @@ export type ActivityQuery = {
   from: string;
   to: string;
 };
+
+export type ActivityPayload = {
+  entityId: string;
+  segment: string;
+  visitDate: string;
+};

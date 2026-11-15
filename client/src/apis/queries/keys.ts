@@ -26,4 +26,5 @@ export const entityKeys = {
 export const activityKeys = {
   all: ["activity"] as const,
   filters: (filters: ActivityQuery) => [...activityKeys.all, ...Object.values(filters)] as const,
+  create: () => [...activityKeys.all, 'create'] as const,
 };
